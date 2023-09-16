@@ -1,0 +1,26 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    color-scheme: dark;
+
+    --blue: #37475a;
+    --darkblue: #232f3e;
+    --darkerblue: #1a2029;
+    --darkestblue: #131a22;
+
+    --grey: #414750;
+    --darkgrey: #2a2e33;
+
+    --darkgreyblue: #21252c;
+    --darkergreyblue: #16191f;
+
+    --yellow: #febd69;
+    --white: #ffffff;
+
+    color: var(--white);
+    background-color: var(--darkergreyblue);
+}
+
+h1 {
+    color: var(--yellow);
+    background-color: var(--darkblue);
+}
