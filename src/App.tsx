@@ -1,10 +1,13 @@
 import "./App.css";
+import ResponsiveAppBar from "./components/ResponsiveAppBar";
+import EnhancedTable from "./components/EnhancedTable";
 
 function App() {
     return (
         <>
-            <h1>ReQuest</h1>
-            <p>IOD Capstone Project - Justin Aavik</p>
+            <ResponsiveAppBar />
+            <br />
+            <EnhancedTable />
         </>
     );
 }
