@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import { blue, green, grey, red } from "@mui/material/colors";
+import { blue, green, grey, red, yellow } from "@mui/material/colors";
 
 // A custom theme for this app
 const theme = createTheme({
@@ -14,9 +14,15 @@ const theme = createTheme({
         },
         success: {
             main: green[600],
+            light: green[100],
         },
         error: {
             main: red[600],
+            light: red[100],
+        },
+        warning: {
+            main: yellow[600],
+            light: yellow[100],
         },
     },
 });
