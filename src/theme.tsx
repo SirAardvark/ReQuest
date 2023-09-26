@@ -6,7 +6,7 @@ const theme = createTheme({
     palette: {
         primary: {
             main: blue[900],
-            light: blue[500],
+            light: blue[100],
         },
         secondary: {
             main: grey[700],
@@ -16,7 +16,7 @@ const theme = createTheme({
             main: green[600],
         },
         error: {
-            main: red[400],
+            main: red[600],
         },
     },
 });

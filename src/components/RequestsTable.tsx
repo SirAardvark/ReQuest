@@ -17,89 +17,109 @@ import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
 import { Button } from "@mui/material";
 
+import { Link } from "react-router-dom";
+
 interface Data {
     requestID: number;
+    status: string;
     type: string;
-    subtype: string;
     requestor: string;
     title: string;
+    lastUpdatedDate: string;
     createdDate: string;
-    technician: string;
+    assignee: string;
 }
 
 function createData(
     requestID: number,
+    status: string,
     type: string,
-    subtype: string,
     requestor: string,
     title: string,
+    lastUpdatedDate: string,
     createdDate: string,
-    technician: string
+    assignee: string
 ): Data {
     return {
         requestID,
+        status,
         type,
-        subtype,
         requestor,
         title,
+        lastUpdatedDate,
         createdDate,
-        technician,
+        assignee,
     };
 }
 
 const rows = [
     createData(
         1,
-        "IT",
-        "Password Reset",
+        "Completed",
+        "Support",
         "John Smith",
         "Need assistance with resetting my password",
+        "17/09/2023",
         "17/09/2023",
         "Justin Aavik"
     ),
     createData(
         2,
-        "IT",
-        "Laptop Setup",
+        "Cancelled",
+        "Support",
         "Mary Jane",
         "Setup New laptop",
+        "18/09/2023",
         "17/09/2023",
         "Justin Aavik"
     ),
-    createData(3, "IT", "Software", "John Smith", "Install Adobe", "17/09/2023", "Justin Aavik"),
+    createData(
+        3,
+        "Completed",
+        "Support",
+        "John Smith",
+        "Install Adobe",
+        "19/09/2023",
+        "17/09/2023",
+        "Justin Aavik"
+    ),
     createData(
         4,
-        "Data",
-        "Data Export",
+        "In Progress",
+        "Support",
         "John Smith",
         "Export Data to Spreadsheet",
+        "18/09/2023",
         "18/09/2023",
         "Justin Aavik"
     ),
     createData(
         5,
-        "Data",
-        "Data Import",
+        "In Progress",
+        "Support",
         "John Smith",
         "Import Data from Spreadsheet",
+        "18/09/2023",
         "18/09/2023",
         "Justin Aavik"
     ),
     createData(
         6,
-        "Dev",
-        "Bug",
+        "Open",
+        "Raise Bug",
         "Mary Jane",
         "Data loading incorrectly",
+        "19/09/2023",
         "19/09/2023",
         "Justin Aavik"
     ),
     createData(
         7,
-        "Dev",
-        "Feature Request",
+        "Open",
+        "Change Request",
         "John Smith",
         "New field in DB to be created",
+        "19/09/2023",
         "19/09/2023",
         "Justin Aavik"
     ),
@@ -157,16 +177,16 @@ const headCells: readonly HeadCell[] = [
         label: "ID",
     },
     {
+        id: "status",
+        numeric: false,
+        disablePadding: false,
+        label: "Status",
+    },
+    {
         id: "type",
         numeric: false,
         disablePadding: false,
         label: "Type",
-    },
-    {
-        id: "subtype",
-        numeric: false,
-        disablePadding: false,
-        label: "Sub Type",
     },
     {
         id: "requestor",
@@ -181,16 +201,23 @@ const headCells: readonly HeadCell[] = [
         label: "Title",
     },
     {
+        id: "lastUpdatedDate",
+        numeric: false,
+        disablePadding: false,
+        label: "Last Updated Date",
+    },
+    {
         id: "createdDate",
         numeric: false,
         disablePadding: false,
         label: "Created Date",
     },
+
     {
-        id: "technician",
+        id: "assignee",
         numeric: false,
         disablePadding: false,
-        label: "Technician",
+        label: "Assignee",
     },
 ];
 
@@ -271,21 +298,16 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             >
                 Requests
             </Typography>
-            <Button variant="contained" color="success">
-                New Request
-            </Button>
+            <Link to={"/new-request"}>
+                <Button variant="contained" color="success">
+                    New Request
+                </Button>
+            </Link>
         </Toolbar>
     );
 }
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    // Highlights every second row light grey
-    "&:nth-of-type(odd)": {
-        backgroundColor: theme.palette.secondary.light,
-    },
-}));
-
-export default function EnhancedTable() {
+export default function RequestsTable() {
     const [order, setOrder] = React.useState<Order>("desc");
     const [orderBy, setOrderBy] = React.useState<keyof Data>("requestID");
     const [page, setPage] = React.useState(0);
@@ -339,18 +361,33 @@ export default function EnhancedTable() {
                             onRequestSort={handleRequestSort}
                             rowCount={rows.length}
                         />
+
                         <TableBody>
                             {visibleRows.map((row) => {
                                 return (
-                                    <StyledTableRow key={row.requestID}>
+                                    <TableRow
+                                        key={row.requestID}
+                                        component={Link}
+                                        to={`/request/${row.requestID}`}
+                                        sx={{
+                                            "&:nth-of-type(odd)": {
+                                                backgroundColor: "secondary.light",
+                                            },
+                                            ":hover": {
+                                                backgroundColor: "primary.light",
+                                            },
+                                            textDecoration: "none",
+                                        }}
+                                    >
                                         <TableCell align="left">{row.requestID}</TableCell>
+                                        <TableCell align="left">{row.status}</TableCell>
                                         <TableCell align="left">{row.type}</TableCell>
-                                        <TableCell align="left">{row.subtype}</TableCell>
                                         <TableCell align="left">{row.requestor}</TableCell>
                                         <TableCell align="left">{row.title}</TableCell>
+                                        <TableCell align="left">{row.lastUpdatedDate}</TableCell>
                                         <TableCell align="left">{row.createdDate}</TableCell>
-                                        <TableCell align="left">{row.technician}</TableCell>
-                                    </StyledTableRow>
+                                        <TableCell align="left">{row.assignee}</TableCell>
+                                    </TableRow>
                                 );
                             })}
                             {emptyRows > 0 && (

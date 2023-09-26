@@ -13,8 +13,10 @@ import MenuItem from "@mui/material/MenuItem";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-const pages = ["Dashboard", "Tickets"];
-const settings = ["Account", "Logout"];
+import { NavLink } from "react-router-dom";
+
+const pages = ["dashboard", "requests"];
+const settings = ["account", "logout"];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -46,7 +48,6 @@ function ResponsiveAppBar() {
                         variant="h5"
                         noWrap
                         component="a"
-                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: "none", md: "flex" },
@@ -85,12 +86,15 @@ function ResponsiveAppBar() {
                             onClose={handleCloseNavMenu}
                             sx={{
                                 display: { xs: "block", md: "none" },
+                                textDecoration: "none",
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
+                                <NavLink to={`/${page}`}>
+                                    <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                        <Typography textAlign="center">{page}</Typography>
+                                    </MenuItem>
+                                </NavLink>
                             ))}
                         </Menu>
                     </Box>
@@ -101,7 +105,6 @@ function ResponsiveAppBar() {
                         variant="h5"
                         noWrap
                         component="a"
-                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: "flex", md: "none" },
@@ -113,15 +116,29 @@ function ResponsiveAppBar() {
                     >
                         ReQuest
                     </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            display: { xs: "none", md: "flex" },
+                            textDecoration: "none",
+                        }}
+                    >
                         {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: "white", display: "block", fontWeight: "bold" }}
-                            >
-                                {page}
-                            </Button>
+                            <NavLink to={`/${page}`}>
+                                <Button
+                                    key={page}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{
+                                        my: 2,
+                                        color: "white",
+                                        display: "block",
+                                        fontWeight: "bold",
+                                        textDecoration: "none",
+                                    }}
+                                >
+                                    {page}
+                                </Button>
+                            </NavLink>
                         ))}
                     </Box>
 

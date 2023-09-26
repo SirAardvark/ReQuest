@@ -1,5 +1,6 @@
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    text-decoration: none !important;
     color-scheme: light;
 
     --blue2: #2a6de9;
