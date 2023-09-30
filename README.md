@@ -1,3 +1,3 @@
 # ReQuest - IOD Capstone Project - Justin Aavik
 
-ReQuest is a ticket management system.
+ReQuest is a support request management system.

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { visuallyHidden } from "@mui/utils";
+import PropTypes from "prop-types";
 import {
     Button,
     Box,
@@ -21,27 +22,16 @@ import {
 
 import { Link } from "react-router-dom";
 
-interface Data {
-    requestID: number;
-    status: string;
-    type: string;
-    requestor: string;
-    title: string;
-    lastUpdatedDate: string;
-    createdDate: string;
-    assignee: string;
-}
-
 function createData(
-    requestID: number,
-    status: string,
-    type: string,
-    requestor: string,
-    title: string,
-    lastUpdatedDate: string,
-    createdDate: string,
-    assignee: string
-): Data {
+    requestID,
+    status,
+    type,
+    requestor,
+    title,
+    lastUpdatedDate,
+    createdDate,
+    assignee
+) {
     return {
         requestID,
         status,
@@ -127,7 +117,7 @@ const rows = [
     ),
 ];
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
         return -1;
     }
@@ -137,12 +127,7 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     return 0;
 }
 
-type Order = "asc" | "desc";
-
-function getComparator<Key extends keyof any>(
-    order: Order,
-    orderBy: Key
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+function getComparator(order, orderBy) {
     return order === "desc"
         ? (a, b) => descendingComparator(a, b, orderBy)
         : (a, b) => -descendingComparator(a, b, orderBy);
@@ -152,8 +137,8 @@ function getComparator<Key extends keyof any>(
 // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
-    const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
         const order = comparator(a[0], b[0]);
         if (order !== 0) {
@@ -164,14 +149,7 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
     return stabilizedThis.map((el) => el[0]);
 }
 
-interface HeadCell {
-    disablePadding: boolean;
-    id: keyof Data;
-    label: string;
-    numeric: boolean;
-}
-
-const headCells: readonly HeadCell[] = [
+const headCells = [
     {
         id: "requestID",
         numeric: true,
@@ -223,34 +201,27 @@ const headCells: readonly HeadCell[] = [
     },
 ];
 
-interface EnhancedTableProps {
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-    order: Order;
-    orderBy: string;
-    rowCount: number;
-}
-
-const StyledTableRowHeader = styled(TableRow)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.main,
-}));
-
-const StyledTableCellHeader = styled(TableCell)(({ theme }) => ({
-    fontWeight: "bold",
-    color: theme.palette.common.white,
-}));
-
-const StyledTableSortHeader = styled(TableSortLabel)(() => ({
-    color: "white !important",
-    "& svg": {
-        color: "white !important",
-    },
-}));
-
-function EnhancedTableHead(props: EnhancedTableProps) {
+function EnhancedTableHead(props) {
     const { order, orderBy, onRequestSort } = props;
-    const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
+
+    const StyledTableRowHeader = styled(TableRow)(({ theme }) => ({
+        backgroundColor: theme.palette.secondary.main,
+    }));
+
+    const StyledTableCellHeader = styled(TableCell)(({ theme }) => ({
+        fontWeight: "bold",
+        color: theme.palette.common.white,
+    }));
+
+    const StyledTableSortHeader = styled(TableSortLabel)(() => ({
+        color: "white !important",
+        "& svg": {
+            color: "white !important",
+        },
+    }));
 
     return (
         <TableHead>
@@ -282,9 +253,13 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     );
 }
 
-interface EnhancedTableToolbarProps {}
+EnhancedTableHead.propTypes = {
+    onRequestSort: PropTypes.func.isRequired,
+    order: PropTypes.oneOf(["asc", "desc"]).isRequired,
+    orderBy: PropTypes.string.isRequired,
+};
 
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+function EnhancedTableToolbar(props) {
     return (
         <Toolbar
             sx={{
@@ -310,28 +285,29 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 }
 
 export default function RequestsTable() {
-    const [order, setOrder] = React.useState<Order>("desc");
-    const [orderBy, setOrderBy] = React.useState<keyof Data>("requestID");
+    const [order, setOrder] = React.useState("asc");
+    const [orderBy, setOrderBy] = React.useState("calories");
+    const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
+    const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
         setOrder(isAsc ? "desc" : "asc");
         setOrderBy(property);
     };
 
-    const handleChangePage = (event: unknown, newPage: number) => {
+    const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
 
-    const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeDense = (event) => {
         setDense(event.target.checked);
     };
 

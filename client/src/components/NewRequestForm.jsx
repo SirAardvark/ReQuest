@@ -2,29 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, FormGroup, TextField, Paper, Typography } from "@mui/material";
 
-interface FormValues {
-    requestType?: string;
-    requestTitle?: string;
-    requestDetails?: string;
-}
-
-const types = [
-    {
-        value: "Support",
-    },
-    {
-        value: "Change Request",
-    },
-    {
-        value: "Raise Bug",
-    },
-];
+const types = [{ value: "Support" }, { value: "Change Request" }, { value: "Raise Bug" }];
 
 export default function FormSubmitHooks() {
-    const [formValues, setFormValues] = useState<FormValues>({});
-    const handleTextFieldChange = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
+    const [formValues, setFormValues] = useState([]);
+    const handleTextFieldChange = (event) => {
         const { name, value } = event.target;
         setFormValues({
             ...formValues,
