@@ -13,25 +13,17 @@ import ContactMailIcon from "@mui/icons-material/ContactMail";
 
 import { NavLink } from "react-router-dom";
 
-const pages = ["dashboard", "requests", "account", "configuration"];
+const pages = ["dashboard", "requests", "account", "config"];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
-    };
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
-    };
-
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
     };
 
     return (
