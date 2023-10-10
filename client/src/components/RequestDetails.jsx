@@ -7,17 +7,39 @@ import {
     Divider,
     Button,
     TextField,
-    Card,
-    CardContent,
     RadioGroup,
     Radio,
     FormControlLabel,
 } from "@mui/material";
-import EmailIcon from "@mui/icons-material/Email";
-import ReplyIcon from "@mui/icons-material/Reply";
-import StickyNote2Icon from "@mui/icons-material/StickyNote2";
+
+import { useState, useEffect } from "react";
+import StyledStatusCell from "./StyledStatusCell";
+import RequestActivityNotes from "./RequestActivityNotes";
 
 function RequestDetailsView() {
+    let currentURLDetails = window.location.href.split("/");
+    let requestID = currentURLDetails[4]; // Getting the request ID from the URL
+
+    const [requestDetails, setRequestDetails] = useState([]);
+
+    useEffect(() => {
+        const fetchAllRequests = async () => {
+            fetch(`http://localhost:8080/requests/${requestID}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    setRequestDetails(data);
+                })
+                .catch((error) => console.error(error));
+        };
+        fetchAllRequests();
+    }, []);
+
+    function formatDate(datetime) {
+        const date = new Date(datetime);
+        const formattedDate = date.toLocaleDateString("en-AU");
+        return formattedDate;
+    }
+
     return (
         <>
             <Box sx={{ width: "90%", margin: "auto", maxWidth: 1500 }}>
@@ -27,10 +49,12 @@ function RequestDetailsView() {
                         <Grid container spacing={2}>
                             <Grid xs={8}>
                                 <Typography variant="h5" sx={{ paddingBottom: 1 }}>
-                                    Request Title
+                                    {requestDetails.title}
                                 </Typography>
                                 <Divider />
-                                <Typography sx={{ paddingTop: 2 }}>Request Details</Typography>
+                                <Typography sx={{ paddingTop: 2 }}>
+                                    {requestDetails.details}
+                                </Typography>
                             </Grid>
                             {/* Details Tab */}
                             <Grid xs={4}>
@@ -40,19 +64,23 @@ function RequestDetailsView() {
                                 <Divider />
                                 <Stack spacing={1} sx={{ paddingTop: 2 }}>
                                     <Typography>
-                                        <b>Assignee:</b> Justin Aavik
+                                        <StyledStatusCell status={requestDetails.status_type} />
                                     </Typography>
                                     <Typography>
-                                        <b>Requestor:</b> Bob Smith
+                                        <b>ID:</b> {requestDetails.request_id}
                                     </Typography>
                                     <Typography>
-                                        <b>Request Type:</b> Support
+                                        <b>Assignee:</b> {requestDetails.assignee_name}
                                     </Typography>
                                     <Typography>
-                                        <b>Last Updated Date:</b> 19/09/2023
+                                        <b>Requestor:</b> {requestDetails.requestor_name}
                                     </Typography>
                                     <Typography>
-                                        <b>Created Date:</b> 19/09/2023
+                                        <b>Request Type:</b> {requestDetails.request_type}
+                                    </Typography>
+                                    <Typography>
+                                        <b>Created Date:</b>{" "}
+                                        {formatDate(requestDetails.created_date)}
                                     </Typography>
                                 </Stack>
                             </Grid>
@@ -98,57 +126,7 @@ function RequestDetailsView() {
                         <Divider />
                         <Stack spacing={2} sx={{ paddingTop: 2 }}>
                             <Stack spacing={1}>
-                                <Card sx={{ backgroundColor: "warning.light" }}>
-                                    <CardContent>
-                                        <Stack direction={"row"} spacing={2}>
-                                            <StickyNote2Icon />
-                                            <div style={{ width: "100%" }}>
-                                                <Typography>
-                                                    <b>Justin Aavik</b> updated at 10:00AM |{" "}
-                                                    <b>Internal Note</b>
-                                                </Typography>
-                                                <Divider />
-                                                <Typography>
-                                                    Internal Note that relates to this ticket
-                                                </Typography>
-                                            </div>
-                                        </Stack>
-                                    </CardContent>
-                                </Card>
-                                <Card sx={{ backgroundColor: "primary.light" }}>
-                                    <CardContent>
-                                        <Stack direction={"row"} spacing={2}>
-                                            <ReplyIcon />
-                                            <div style={{ width: "100%" }}>
-                                                <Typography>
-                                                    <b>Justin Aavik</b> updated at 10:00AM |{" "}
-                                                    <b>Email to Requestor</b>
-                                                </Typography>
-                                                <Divider />
-                                                <Typography>
-                                                    Hi, this is a reply to a customer
-                                                </Typography>
-                                            </div>
-                                        </Stack>
-                                    </CardContent>
-                                </Card>
-                                <Card sx={{ backgroundColor: "success.light" }}>
-                                    <CardContent>
-                                        <Stack direction={"row"} spacing={2}>
-                                            <EmailIcon />
-                                            <div style={{ width: "100%" }}>
-                                                <Typography>
-                                                    <b>Justin Aavik</b> updated at 10:00AM |{" "}
-                                                    <b>Email from Requestor</b>
-                                                </Typography>
-                                                <Divider />
-                                                <Typography>
-                                                    Hi, this is a reply from a customer
-                                                </Typography>
-                                            </div>
-                                        </Stack>
-                                    </CardContent>
-                                </Card>
+                                <RequestActivityNotes requestID={requestID} />;
                             </Stack>
                         </Stack>
                     </Paper>

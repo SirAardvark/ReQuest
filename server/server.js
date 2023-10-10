@@ -1,56 +1,85 @@
 import express from "express";
+import cors from "cors";
 
-import {
-    getRequest,
-    getRequests,
-    getRequestStatus,
-    getRequestStatusName,
-    getRequestTypes,
-    getRequestTypeName,
-} from "./database.js";
+// import Database functions.
+import * as database from "./database.js";
 
 const app = express();
-
 app.use(express.json());
+app.use(cors());
 
 // Requests ------------------------------------------------------------------------
 app.get("/requests", async (req, res) => {
-    const requests = await getRequests();
-    res.send(requests);
+    const result = await database.getRequests();
+    res.send(result);
 });
 
 app.get("/requests/:id", async (req, res) => {
     const id = req.params.id;
-    const request = await getRequest(id);
-    res.send(request);
+    const result = await database.getRequest(id);
+    res.send(result);
 });
 
 // Request Status ------------------------------------------------------------------------
-app.get("/requests-status", async (req, res) => {
-    const requestStatus = await getRequestStatus();
-    res.send(requestStatus);
+app.get("/request_status", async (req, res) => {
+    const result = await database.getRequestStatus();
+    res.send(result);
 });
 
-app.get("/requests-status/:id", async (req, res) => {
+app.get("/request_status/:id", async (req, res) => {
     const id = req.params.id;
-    const requestStatus = await getRequestStatusName(id);
-    res.send(requestStatus);
+    const result = await database.getRequestStatusName(id);
+    res.send(result);
 });
 
 // Request Type ------------------------------------------------------------------------
-app.get("/requests-type", async (req, res) => {
-    const requestType = await getRequestTypes();
+app.get("/request_type", async (req, res) => {
+    const result = await database.getRequestTypes();
     res.send(requestType);
 });
 
-app.get("/requests-type/:id", async (req, res) => {
+app.get("/request_type/:id", async (req, res) => {
     const id = req.params.id;
-    const requestType = await getRequestTypeName(id);
-    res.send(requestType);
+    const result = await database.getRequestTypeName(id);
+    res.send(result);
 });
+
+// Request Activities ------------------------------------------------------------------------
+app.get("/request_activities/:id", async (req, res) => {
+    const id = req.params.id;
+    const result = await database.getRequestActivities(id);
+    res.send(result);
+});
+
 // User ------------------------------------------------------------------------
+app.get("/users", async (req, res) => {
+    const result = await database.getUsers();
+    res.send(result);
+});
+
+app.get("/users/:id", async (req, res) => {
+    const id = req.params.id;
+    const result = await database.getUser(id);
+    res.send(result);
+});
+
+app.get("/user_name/id", async (req, res) => {
+    const id = req.params.id;
+    const result = await database.getUserName(id);
+    res.send(result);
+});
 
 // User Type ------------------------------------------------------------------------
+app.get("/user_roles", async (req, res) => {
+    const result = await database.getUserRoles();
+    res.send(result);
+});
+
+app.get("/user_roles/:id", async (req, res) => {
+    const id = req.params.id;
+    const result = await database.getUserRoleName(id);
+    res.send(result);
+});
 
 // app.post("/notes", async (req, res) => {
 //     const { title, contents } = req.body;

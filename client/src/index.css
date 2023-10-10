@@ -4,6 +4,7 @@
     color-scheme: light;
 
     --blue2: #2a6de9;
-
     --white: #ffffff;
+
+    min-width: 500px;
 }
