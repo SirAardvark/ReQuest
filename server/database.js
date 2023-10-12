@@ -102,6 +102,11 @@ export async function getRequestActivities(id) {
     return rows;
 }
 
+export async function getRequestActivityConfig() {
+    const [rows] = await pool.query("SELECT * FROM request.`request.activitytype`;");
+    return rows;
+}
+
 // User ------------------------------------------------------------------------
 export async function getUsers() {
     const [rows] = await pool.query(

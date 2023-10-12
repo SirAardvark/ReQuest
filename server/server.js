@@ -45,6 +45,11 @@ app.get("/request_activities/:id", async (req, res) => {
     res.send(result);
 });
 
+app.get("/request_activity_config", async (req, res) => {
+    const result = await database.getRequestActivityConfig();
+    res.send(result);
+});
+
 // User ------------------------------------------------------------------------
 app.get("/users", async (req, res) => {
     const result = await database.getUsers();

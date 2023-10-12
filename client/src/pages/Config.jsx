@@ -1,12 +1,17 @@
 import ResponsiveAppBar from "../components/ResponsiveAppBar";
-import ConfigList from "../components/ConfigList";
+
+import ConfigActivityTypeTable from "../components/ConfigActivityTypeTable";
+import ConfigStatusTable from "../components/ConfigStatusTypeTable";
+import ConfigUserRoleTypeTable from "../components/ConfigUserRoleTypeTable";
 
 function Config() {
     return (
         <>
             <ResponsiveAppBar />
             <br />
-            <ConfigList />
+            <ConfigActivityTypeTable />
+            <ConfigStatusTable />
+            <ConfigUserRoleTypeTable />
         </>
     );
 }
