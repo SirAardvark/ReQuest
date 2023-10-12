@@ -26,6 +26,13 @@ app.post("/new_request", async (req, res) => {
     res.status(201).send(note);
 });
 
+app.put("/update_request_status/:id", async (req, res) => {
+    const id = req.params.id;
+    const { statusID } = req.body;
+    const note = await database.updateRequestStatus(statusID, id);
+    res.status(201).send(note);
+});
+
 // Request Status ------------------------------------------------------------------------
 app.get("/request_status", async (req, res) => {
     const result = await database.getRequestStatus();

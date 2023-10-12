@@ -17,7 +17,7 @@ const pool = mysql
 export async function getRequests() {
     const [rows] = await pool.query(
         `SELECT r.\`request_id\`,
-        rs.\`name\` AS \`status_type\`,
+        rs.\`name\` AS 'status_type',
         ur.\`name\` AS 'requestor_name',
         ua.\`name\` AS 'assignee_name',
         r.\`title\`,
@@ -68,6 +68,17 @@ export async function createRequest(title, details) {
 
     const requestID = rows.request_id;
     return getRequest(requestID);
+}
+
+export async function updateRequestStatus(statusID, requestID) {
+    const [rows] = await pool.query(
+        `UPDATE request.\`request\`
+        SET \`status_id\` = ?
+        WHERE \`request_id\` = ?;`,
+        [statusID, requestID]
+    );
+
+    return rows;
 }
 
 // Request Status ------------------------------------------------------------------------

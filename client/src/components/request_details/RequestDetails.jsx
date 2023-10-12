@@ -1,11 +1,20 @@
 import Grid from "@mui/material/Unstable_Grid2";
-import { Typography, Stack, Paper, Divider } from "@mui/material";
+import {
+    InputLabel,
+    FormControl,
+    MenuItem,
+    Typography,
+    Select,
+    Stack,
+    Paper,
+    Divider,
+} from "@mui/material";
 
 import { useState, useEffect } from "react";
-import StyledStatusCell from "../requests/StyledStatusCell";
 
 function RequestDetails(props) {
     const [requestDetails, setRequestDetails] = useState([]);
+    const [requestStatus, setRequestStatus] = useState("");
 
     useEffect(() => {
         const fetchAllRequests = async () => {
@@ -13,6 +22,7 @@ function RequestDetails(props) {
                 .then((response) => response.json())
                 .then((data) => {
                     setRequestDetails(data);
+                    setRequestStatus(data.status_type);
                 })
                 .catch((error) => console.error(error));
         };
@@ -24,6 +34,52 @@ function RequestDetails(props) {
         const formattedDate = date.toLocaleDateString("en-AU");
         return formattedDate;
     }
+
+    const handleStatusChange = (event) => {
+        setRequestStatus(event.target.value);
+        formatDataQuery(event.target.value);
+    };
+
+    function formatDataQuery(statusTypeName) {
+        let statusID;
+        switch (statusTypeName) {
+            case "Open":
+                statusID = 1;
+                break;
+            case "In Progress":
+                statusID = 2;
+                break;
+            case "Pending Response":
+                statusID = 3;
+                break;
+            case "On Hold":
+                statusID = 4;
+                break;
+            case "Completed":
+                statusID = 5;
+                break;
+            case "Cancelled":
+                statusID = 6;
+                break;
+            default:
+                break;
+        }
+        updateRequestStatus(statusID);
+    }
+
+    const updateRequestStatus = async (statusID) => {
+        fetch(`http://localhost:8080/update_request_status/${props.requestID}`, {
+            method: "PUT",
+            body: JSON.stringify({
+                statusID: statusID,
+            }),
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8",
+            },
+        });
+
+        window.location.reload(false);
+    };
 
     return (
         <>
@@ -44,9 +100,21 @@ function RequestDetails(props) {
                         </Typography>
                         <Divider />
                         <Stack spacing={1} sx={{ paddingTop: 2 }}>
-                            <Typography>
-                                <StyledStatusCell status={requestDetails.status_type} />
-                            </Typography>
+                            <FormControl>
+                                <InputLabel>Status</InputLabel>
+                                <Select
+                                    value={requestStatus}
+                                    label="Status"
+                                    onChange={handleStatusChange}
+                                >
+                                    <MenuItem value={"Open"}>Open</MenuItem>
+                                    <MenuItem value={"In Progress"}>In Progress</MenuItem>
+                                    <MenuItem value={"Pending Response"}>Pending Response</MenuItem>
+                                    <MenuItem value={"On Hold"}>On Hold</MenuItem>
+                                    <MenuItem value={"Completed"}>Completed</MenuItem>
+                                    <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+                                </Select>
+                            </FormControl>
                             <Typography>
                                 <b>ID:</b> {requestDetails.request_id}
                             </Typography>
