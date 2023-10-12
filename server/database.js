@@ -18,14 +18,12 @@ export async function getRequests() {
     const [rows] = await pool.query(
         `SELECT r.\`request_id\`,
         rs.\`name\` AS \`status_type\`,
-        rt.\`name\` AS \`request_type\`,
         ur.\`name\` AS 'requestor_name',
         ua.\`name\` AS 'assignee_name',
         r.\`title\`,
         r.\`created_date\`
         FROM request.\`request\` AS r
         LEFT JOIN request.\`request.status\` AS rs ON rs.\`status_id\` = r.\`status_id\`
-        LEFT JOIN request.\`request.type\` AS rt ON rt.\`type_id\` = r.\`type_id\`
         LEFT JOIN request.\`user\` AS ur ON ur.\`user_id\` = r.\`requestor_id\`
         LEFT JOIN request.\`user\` AS ua ON ua.\`user_id\` = r.\`assignee_id\`
         ORDER BY r.\`request_id\` DESC; 
@@ -39,7 +37,6 @@ export async function getRequest(id) {
     const [rows] = await pool.query(
         `SELECT r.\`request_id\`,
         rs.\`name\` AS \`status_type\`,
-        rt.\`name\` AS \`request_type\`,
         ur.\`name\` AS 'requestor_name',
         ua.\`name\` AS 'assignee_name',
         r.\`title\`,
@@ -47,7 +44,6 @@ export async function getRequest(id) {
         r.\`details\`
         FROM request.\`request\` AS r
         LEFT JOIN request.\`request.status\` AS rs ON rs.\`status_id\` = r.\`status_id\`
-        LEFT JOIN request.\`request.type\` AS rt ON rt.\`type_id\` = r.\`type_id\`
         LEFT JOIN request.\`user\` AS ur ON ur.\`user_id\` = r.\`requestor_id\`
         LEFT JOIN request.\`user\` AS ua ON ua.\`user_id\` = r.\`assignee_id\`
         WHERE r.\`request_id\` = ?;`,
@@ -55,6 +51,23 @@ export async function getRequest(id) {
     );
 
     return rows[0];
+}
+
+// status_id 1 = Open
+// requestor_id 2 = Justin Requestor
+// assignee_id 1 = Justin Owner
+export async function createRequest(title, details) {
+    const [rows] = await pool.query(
+        `INSERT INTO request.\`request\`
+        (\`status_id\`, \`requestor_id\`,\`assignee_id\`, \`title\`,
+         \`created_date\`, \`details\`)
+        VALUES
+        (1, 2, 1, ?, NOW(), ?);`,
+        [title, details]
+    );
+
+    const requestID = rows.request_id;
+    return getRequest(requestID);
 }
 
 // Request Status ------------------------------------------------------------------------
@@ -68,19 +81,6 @@ export async function getRequestStatusName(id) {
         "SELECT * FROM request.`request.status` WHERE `status_id` = ?",
         [id]
     );
-    return rows[0].name;
-}
-
-// Request Types ------------------------------------------------------------------------
-export async function getRequestTypes() {
-    const [rows] = await pool.query("SELECT * FROM request.`request.type`");
-    return rows;
-}
-
-export async function getRequestTypeName(id) {
-    const [rows] = await pool.query("SELECT * FROM request.`request.type` WHERE `type_id` = ?", [
-        id,
-    ]);
     return rows[0].name;
 }
 
@@ -148,12 +148,3 @@ export async function getUserRoleName(id) {
     const [rows] = await pool.query("SELECT * FROM request.`user` WHERE `user_id` = ?", [id]);
     return rows[0].name;
 }
-
-// export async function createNote(title, contents) {
-//   const [result] = await pool.query(`
-//   INSERT INTO notes (title, contents)
-//   VALUES (?, ?)
-//   `, [title, contents])
-//   const id = result.insertId
-//   return getNote(id)
-// }

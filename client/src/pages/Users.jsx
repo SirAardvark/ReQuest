@@ -1,13 +1,14 @@
 import ResponsiveAppBar from "../components/ResponsiveAppBar";
+import UsersList from "../components/UsersList";
 
-function Dashboard() {
+function Users() {
     return (
         <>
             <ResponsiveAppBar />
             <br />
-            <p>Dashboard</p>
+            <UsersList />
         </>
     );
 }
 
-export default Dashboard;
+export default Users;

@@ -65,9 +65,6 @@ export default function RequestsTable() {
                                     Status
                                 </TableCell>
                                 <TableCell sx={{ color: "var(--white)", fontWeight: "bold" }}>
-                                    Type
-                                </TableCell>
-                                <TableCell sx={{ color: "var(--white)", fontWeight: "bold" }}>
                                     Requestor
                                 </TableCell>
                                 <TableCell sx={{ color: "var(--white)", fontWeight: "bold" }}>
@@ -102,7 +99,6 @@ export default function RequestsTable() {
                                         <TableCell>
                                             <StyledStatusCell status={row.status_type} />
                                         </TableCell>
-                                        <TableCell>{row.request_type}</TableCell>
                                         <TableCell>{row.requestor_name}</TableCell>
                                         <TableCell sx={{ fontWeight: "bold" }}>
                                             {row.title}

@@ -20,6 +20,12 @@ app.get("/requests/:id", async (req, res) => {
     res.send(result);
 });
 
+app.post("/new_request", async (req, res) => {
+    const { title, details } = req.body;
+    const note = await database.createRequest(title, details);
+    res.status(201).send(note);
+});
+
 // Request Status ------------------------------------------------------------------------
 app.get("/request_status", async (req, res) => {
     const result = await database.getRequestStatus();
@@ -29,18 +35,6 @@ app.get("/request_status", async (req, res) => {
 app.get("/request_status/:id", async (req, res) => {
     const id = req.params.id;
     const result = await database.getRequestStatusName(id);
-    res.send(result);
-});
-
-// Request Type ------------------------------------------------------------------------
-app.get("/request_type", async (req, res) => {
-    const result = await database.getRequestTypes();
-    res.send(requestType);
-});
-
-app.get("/request_type/:id", async (req, res) => {
-    const id = req.params.id;
-    const result = await database.getRequestTypeName(id);
     res.send(result);
 });
 
@@ -80,12 +74,6 @@ app.get("/user_roles/:id", async (req, res) => {
     const result = await database.getUserRoleName(id);
     res.send(result);
 });
-
-// app.post("/notes", async (req, res) => {
-//     const { title, contents } = req.body;
-//     const note = await createNote(title, contents);
-//     res.status(201).send(note);
-// });
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

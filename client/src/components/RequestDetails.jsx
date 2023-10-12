@@ -76,9 +76,6 @@ function RequestDetailsView() {
                                         <b>Requestor:</b> {requestDetails.requestor_name}
                                     </Typography>
                                     <Typography>
-                                        <b>Request Type:</b> {requestDetails.request_type}
-                                    </Typography>
-                                    <Typography>
                                         <b>Created Date:</b>{" "}
                                         {formatDate(requestDetails.created_date)}
                                     </Typography>
@@ -126,7 +123,7 @@ function RequestDetailsView() {
                         <Divider />
                         <Stack spacing={2} sx={{ paddingTop: 2 }}>
                             <Stack spacing={1}>
-                                <RequestActivityNotes requestID={requestID} />;
+                                <RequestActivityNotes requestID={requestID} />
                             </Stack>
                         </Stack>
                     </Paper>

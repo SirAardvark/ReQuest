@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, FormGroup, TextField, Paper, Typography } from "@mui/material";
 
-const types = [{ value: "Support" }, { value: "Change Request" }, { value: "Raise Bug" }];
-
 export default function FormSubmitHooks() {
     const [formValues, setFormValues] = useState([]);
     const handleTextFieldChange = (event) => {
@@ -14,21 +12,13 @@ export default function FormSubmitHooks() {
         });
     };
 
-    const handleSubmit = () => {
-        // If Request Type is not called in form it is updated here.
-        if (formValues.requestType === undefined || formValues.requestType === "") {
-            // Sets to the default type
-            formValues.requestType = types[0].value;
-        }
-
+    const handleSubmit = async () => {
         if (formValues.requestTitle === undefined || formValues.requestTitle === "") {
             alert("Please fill in a Request Title");
         } else if (formValues.requestDetails === undefined || formValues.requestDetails === "") {
             alert("Please fill in the Request Details");
         } else {
-            console.log(formValues.requestType);
-            console.log(formValues.requestTitle);
-            console.log(formValues.requestDetails);
+            await createRequest(formValues.requestTitle, formValues.requestDetails);
         }
     };
 
@@ -37,6 +27,21 @@ export default function FormSubmitHooks() {
 
     const handleCancel = () => {
         // Goes back to previous page on pressing cancel
+        navigate(-1);
+    };
+
+    const createRequest = async (title, details) => {
+        fetch("http://localhost:8080/new_request", {
+            method: "POST",
+            body: JSON.stringify({
+                title: title,
+                details: details,
+            }),
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8",
+            },
+        });
+
         navigate(-1);
     };
 
@@ -51,24 +56,6 @@ export default function FormSubmitHooks() {
                         padding: 2,
                     }}
                 >
-                    <div>
-                        <TextField
-                            sx={{ paddingBottom: 2 }}
-                            select
-                            name="requestType"
-                            label="Request Type"
-                            SelectProps={{
-                                native: true,
-                            }}
-                            onChange={handleTextFieldChange}
-                        >
-                            {types.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.value}
-                                </option>
-                            ))}
-                        </TextField>
-                    </div>
                     <TextField
                         sx={{ paddingBottom: 2 }}
                         name="requestTitle"
