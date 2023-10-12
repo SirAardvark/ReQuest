@@ -1,5 +1,5 @@
-import ResponsiveAppBar from "../components/ResponsiveAppBar";
-import UsersList from "../components/UsersList";
+import ResponsiveAppBar from "../components/nav/ResponsiveAppBar";
+import UsersList from "../components/users/UsersList";
 
 function Users() {
     return (

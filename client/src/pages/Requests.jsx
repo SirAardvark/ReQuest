@@ -1,5 +1,5 @@
-import ResponsiveAppBar from "../components/ResponsiveAppBar";
-import RequestsTable from "../components/RequestsTable";
+import ResponsiveAppBar from "../components/nav/ResponsiveAppBar";
+import RequestsTable from "../components/requests/RequestsTable";
 
 function Requests() {
     return (

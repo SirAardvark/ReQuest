@@ -1,5 +1,5 @@
-import ResponsiveAppBar from "../components/ResponsiveAppBar";
-import NewRequestForm from "../components/NewRequestForm";
+import ResponsiveAppBar from "../components/nav/ResponsiveAppBar";
+import NewRequestForm from "../components/new_request/NewRequestForm";
 
 function NewRequest() {
     return (

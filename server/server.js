@@ -50,6 +50,12 @@ app.get("/request_activity_config", async (req, res) => {
     res.send(result);
 });
 
+app.post("/new_request_activity", async (req, res) => {
+    const { requestID, activityTypeID, userID, message } = req.body;
+    const note = await database.createRequestActivity(requestID, activityTypeID, userID, message);
+    res.status(201).send(note);
+});
+
 // User ------------------------------------------------------------------------
 app.get("/users", async (req, res) => {
     const result = await database.getUsers();

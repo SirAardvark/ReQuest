@@ -107,6 +107,18 @@ export async function getRequestActivityConfig() {
     return rows;
 }
 
+export async function createRequestActivity(requestID, activityTypeID, userID, message) {
+    const [rows] = await pool.query(
+        `INSERT INTO request.\`request.activity\`
+        (\`request_id\`, \`activity_type_id\`,\`user_id\`, \`created_date\`, \`message\`)
+        VALUES
+        (?, ?, ?, NOW(), ?);`,
+        [requestID, activityTypeID, userID, message]
+    );
+
+    return rows;
+}
+
 // User ------------------------------------------------------------------------
 export async function getUsers() {
     const [rows] = await pool.query(

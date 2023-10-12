@@ -15,7 +15,6 @@ export default function RequestActivityNotes(props) {
             fetch(`http://localhost:8080/request_activities/${props.requestID}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data);
                     setActivitiesDetails(data);
                 })
                 .catch((error) => console.error(error));

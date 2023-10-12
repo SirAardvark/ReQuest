@@ -1,8 +1,8 @@
-import ResponsiveAppBar from "../components/ResponsiveAppBar";
+import ResponsiveAppBar from "../components/nav/ResponsiveAppBar";
 
-import ConfigActivityTypeTable from "../components/ConfigActivityTypeTable";
-import ConfigStatusTable from "../components/ConfigStatusTypeTable";
-import ConfigUserRoleTypeTable from "../components/ConfigUserRoleTypeTable";
+import ConfigActivityTypeTable from "../components/config/ConfigActivityTypeTable";
+import ConfigStatusTable from "../components/config/ConfigStatusTypeTable";
+import ConfigUserRoleTypeTable from "../components/config/ConfigUserRoleTypeTable";
 
 function Config() {
     return (
