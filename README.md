@@ -10,10 +10,15 @@ ReQuest is a support request management system that has an emphasis on being sim
 4. Create a .env file in the server folder with the below fields and enter your MySQL info where the {} is.
 
 MYSQL_DATABASE={}
+
 MYSQL_USER={}
+
 MYSQL_PASSWORD={}
+
 MYSQL_HOST=localhost
+
 MYSQL_PORT={}
+
 
 5. Start the server using command npm start in the terminal (If working it will say server is running on port 8080)
 6. Start the client using command npm run dev in the terminal
