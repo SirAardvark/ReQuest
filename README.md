@@ -1,6 +1,6 @@
 # ReQuest - IOD Capstone Project - Justin Aavik
 
-ReQuest is a simple and fast support request management system.
+ReQuest is a support request management system that has an emphasis on being simple, user friendly and fast.
 
 ## How to Setup/Run ReQuest locally
 
