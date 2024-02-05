@@ -5,9 +5,9 @@ ReQuest is a support request management system that has an emphasis on being sim
 ## How to Setup/Run ReQuest locally
 
 1. Download the Repo
-2. Run the SQL query in /setup/setupDB.sql to create all the tables in your local MySQL server
-3. Run npm init on both the server folder and client folder terminal
-4. Create a .env file in the server folder with the below fields and enter your MySQL info where the {} is.
+2. Run the SQL query in `/setup/setupDB.sql` to create all the tables in your local MySQL server
+3. Run `npm install` on both the server folder and client folder terminal
+4. Create a file called `.env` in the server folder with the below fields and enter your MySQL info where the {} is.
 
 MYSQL_DATABASE={}
 
@@ -19,9 +19,8 @@ MYSQL_HOST=localhost
 
 MYSQL_PORT={}
 
-
-5. Start the server using command npm start in the terminal (If working it will say server is running on port 8080)
-6. Start the client using command npm run dev in the terminal
+5. Start the server using command `npm start` in the terminal (If working it will say server is running on port 8080)
+6. Start the client using command `npm run dev` in the terminal
 7. Click the link it outputs and you are now running ReQuest locally.
 
 ## Server API Calls
